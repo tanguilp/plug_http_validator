@@ -9,7 +9,7 @@ defmodule PlugHTTPValidator do
   @type opt :: {:updated_at_field, any()} | {:etag_field, any()}
 
   @type objects :: [object()]
-  @type object :: %{optional(:updated_at) => Datetime.t(), any() => any()}
+  @type object :: %{optional(:updated_at) => DateTime.t(), any() => any()}
 
   @spec set(Plug.Conn.t(), objects() | object(), opts()) :: Plug.Conn.t()
   def set(conn, object_or_objects, opts \\ [])
@@ -44,7 +44,7 @@ defmodule PlugHTTPValidator do
         last_modified =
           most_recent
           |> DateTime.shift_zone!("Etc/UTC")
-          |> Calendar.strftime("%a, %-d %b %Y %X GMT")
+          |> Calendar.strftime("%a, %d %b %Y %X GMT")
 
         Plug.Conn.put_resp_header(conn, "last-modified", last_modified)
     end
