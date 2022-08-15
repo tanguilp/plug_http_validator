@@ -6,7 +6,8 @@ defmodule PlugHTTPValidator do
   @default_updated_at_field :updated_at
 
   @type opts :: [opt()]
-  @type opt :: {:updated_at_field, any()} | {:etag_field, any()} | {:etag_strength, :weak | :strong}
+  @type opt ::
+          {:updated_at_field, any()} | {:etag_field, any()} | {:etag_strength, :weak | :strong}
 
   @type objects :: [object()]
   @type object :: %{optional(:updated_at) => DateTime.t(), any() => any()}
