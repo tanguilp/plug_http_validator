@@ -51,4 +51,46 @@ defmodule PlugHTTPValidatorTest do
 
     assert last_modified == "Sun, 07 Aug 2022 01:02:03 GMT"
   end
+
+  test "sets weak etag by default from one object" do
+    object = %{revision_uuid: "some-uuid-that-changes-on-each-update"}
+
+    conn = conn(:get, "/") |> PlugHTTPValidator.set(object, etag_field: :revision_uuid)
+
+    etag = Enum.find_value(conn.resp_headers, fn
+      {"etag", last_modified} -> last_modified
+      _ -> nil
+    end)
+
+    assert Regex.match?(~r|W/".+"|, etag)
+  end
+
+  test "sets weak etag by default from several object" do
+    objects = [
+      %{revision_uuid: "some-uuid-that-changes-on-each-update"},
+      %{revision_uuid: "some-other-uuid-that-changes-on-each-update"}
+    ]
+
+    conn = conn(:get, "/") |> PlugHTTPValidator.set(objects, etag_field: :revision_uuid)
+
+    etag = Enum.find_value(conn.resp_headers, fn
+      {"etag", last_modified} -> last_modified
+      _ -> nil
+    end)
+
+    assert Regex.match?(~r|W/".+"|, etag)
+  end
+
+  test "sets strong etag by default from one object" do
+    object = %{revision_uuid: "some-uuid-that-changes-on-each-update"}
+
+    conn = conn(:get, "/") |> PlugHTTPValidator.set(object, etag_field: :revision_uuid, etag_strength: :strong)
+
+    etag = Enum.find_value(conn.resp_headers, fn
+      {"etag", last_modified} -> last_modified
+      _ -> nil
+    end)
+
+    assert Regex.match?(~r|".+"|, etag)
+  end
 end
