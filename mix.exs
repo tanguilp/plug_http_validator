@@ -5,9 +5,13 @@ defmodule PlugHTTPValidator.MixProject do
     [
       app: :plug_http_validator,
       version: "0.1.0",
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      docs: [
+        main: "readme",
+        extras: ["README.md"]
+      ]
     ]
   end
 

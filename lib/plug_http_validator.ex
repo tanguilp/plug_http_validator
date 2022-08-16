@@ -26,11 +26,12 @@ defmodule PlugHTTPValidator do
       end
 
       def create(conn, params) do
+        # 201 status code is not cacheable by default
+
         with {:ok, post} <- MyApp.create_post(params) do
           conn
           |> put_status(:created)
           |> put_resp_header("location", Routes.post_path(conn, :show, post))
-          |> PlugHTTPValidator.set(post)
           |> render("show.json", post: post)
         end
       end
