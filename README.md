@@ -79,3 +79,6 @@ def deps do
   ]
 end
 ```
+
+This plug was inspired by [`phoenix_etag`](https://github.com/michalmuskala/phoenix_etag),
+which seems outdated.
