@@ -31,32 +31,34 @@ However, using a weak validator like `last-modified` is very helpful for caches 
 
 Call it before sending the response, for example:
 
-    def index(conn, _params) do
-      posts = MyApp.list_posts()
+```elixir
+def index(conn, _params) do
+  posts = MyApp.list_posts()
 
-      conn
-      |> PlugHTTPValidator.set(posts)
-      |> render("index.json", posts: posts)
-    end
+  conn
+  |> PlugHTTPValidator.set(posts)
+  |> render("index.json", posts: posts)
+end
 
-    def create(conn, params) do
-      # 201 status code is not cacheable by default
+def create(conn, params) do
+  # 201 status code is not cacheable by default
 
-      with {:ok, post} <- MyApp.create_post(params) do
-        conn
-        |> put_status(:created)
-        |> put_resp_header("location", Routes.post_path(conn, :show, post))
-        |> render("show.json", post: post)
-      end
-    end
+  with {:ok, post} <- MyApp.create_post(params) do
+    conn
+    |> put_status(:created)
+    |> put_resp_header("location", Routes.post_path(conn, :show, post))
+    |> render("show.json", post: post)
+  end
+end
 
-    def show(conn, %{"id" => id}) do
-      with {:ok, post} = MyApp.get_post(id) do
-        conn
-        |> PlugHTTPValidator.set(post)
-        |> render("show.txt", post: post)
-      end
-    end
+def show(conn, %{"id" => id}) do
+  with {:ok, post} = MyApp.get_post(id) do
+    conn
+    |> PlugHTTPValidator.set(post)
+    |> render("show.txt", post: post)
+  end
+end
+```
 
 By default, this function sets the `last-modified` response header using the `:updated_at`
 field of the object(s), taking the most recent if there are more than one object.
