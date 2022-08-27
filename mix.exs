@@ -4,7 +4,7 @@ defmodule PlugHTTPValidator.MixProject do
   def project do
     [
       app: :plug_http_validator,
-      description: "Utils to set HTTP validators on Plug responses",
+      description: "Set HTTP validators on Plug responses",
       version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
