@@ -11,7 +11,9 @@ defmodule PlugHTTPValidator.MixProject do
       docs: [
         main: "readme",
         extras: ["README.md"]
-      ]
+      ],
+      package: package(),
+      source_url: "https://github.com/tanguilp/plug_http_validator"
     ]
   end
 
@@ -28,6 +30,13 @@ defmodule PlugHTTPValidator.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:plug, "~> 1.0"}
+    ]
+  end
+
+  def package() do
+    [
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/tanguilp/plugoid"}
     ]
   end
 end
