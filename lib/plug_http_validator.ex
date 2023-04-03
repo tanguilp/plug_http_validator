@@ -78,20 +78,24 @@ defmodule PlugHTTPValidator do
 
     objects
     |> Enum.map(&Map.get(&1, updated_at_field))
-    |> Enum.filter(&match?(%DateTime{}, &1))
+    |> Enum.filter(& match?(%DateTime{}, &1) || match?(%NaiveDateTime{}, &1))
     |> case do
       [] ->
         conn
 
       updated_at_list ->
-        most_recent = Enum.max(updated_at_list, DateTime)
 
-        last_modified =
-          most_recent
-          |> DateTime.shift_zone!("Etc/UTC")
-          |> Calendar.strftime("%a, %d %b %Y %X GMT")
+        last_modified = case List.first(updated_at_list) do
 
-        Plug.Conn.put_resp_header(conn, "last-modified", last_modified)
+          %DateTime{} ->
+            Enum.max(updated_at_list, DateTime)
+            |> DateTime.shift_zone!("Etc/UTC")
+
+          %NaiveDateTime{} ->
+            Enum.max(updated_at_list, NaiveDateTime)
+          end
+
+        Plug.Conn.put_resp_header(conn, "last-modified", Calendar.strftime(last_modified, "%a, %d %b %Y %X GMT"))
     end
   end
 
