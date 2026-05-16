@@ -77,7 +77,7 @@ otherwise the call will crash. Make sure to understand what an etag is before us
 ```elixir
 def deps do
   [
-    {:plug_http_validator, "~> 0.1.0"}
+    {:plug_http_validator, "~> 1.0"}
   ]
 end
 ```

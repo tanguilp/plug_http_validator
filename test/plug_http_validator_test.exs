@@ -1,6 +1,7 @@
 defmodule PlugHTTPValidatorTest do
   use ExUnit.Case
-  use Plug.Test
+
+  import Plug.Test
 
   test "sets last-modified header for single object" do
     object = %{updated_at: ~U[2022-08-07 01:02:03.133742Z]}
